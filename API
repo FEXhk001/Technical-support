@@ -1,0 +1,110 @@
+1.returnTicker
+Retrieves summary information for each currency pair listed on the exchange. Fields include:
+
+GET:http://api.fexhk.com/teamwork/public?command=returnTicker
+
+Field	            Description
+id	                 Id of the currency pair.
+last	                 Execution price for the most recent trade for this pair.
+lowestAsk	        Lowest current purchase price for this asset.
+highestBid	        Highest current sale price for this asset.
+percentChange       Price change percentage.
+baseVolume	        Base units traded in the last 24 hours.
+quoteVolume	       Quoted units traded in the last 24 hours.
+isFrozen	            Indicates if this market is currently trading or not.
+high24hr	            The highest execution price for this pair within the last 24 hours.
+low24hr	            The lowest execution price for this pair within the last 24 hours.
+
+
+2.return24hVolume
+Returns the 24-hour volume for all markets as well as totals for primary currencies.
+Primary currencies include BTC, ETH, USDT, USDC and show the total amount of those tokens that have traded within the last 24 hours
+
+GET:http://api.fexhk.com/teamwork/public?command=return24hVolume 
+
+
+3.returnOrderBook
+
+Returns the order book for a given market, as well as a sequence number used by websockets for synchronization of book updates and an indicator specifying whether the market is frozen. You may set currencyPair to "all" to get the order books of all markets.
+
+GET:http://api.fexhk.com/teamwork/public?command=returnOrderBook&currencyPair=BTC_USDT&depth=10
+
+
+Request Parameter     Description
+
+currencyPair	          A pair like BTC_ETH or all
+depth (optional)	     Default depth is 50. Max depth is 100.
+
+
+Field       	    Description
+
+asks	           An array of price aggregated offers in the book ordered from low to high price.
+bids	           An array of price aggregated bids in the book ordered from high to low price.
+isFrozen	      Indicates if trading the market is currently disabled or not.
+seq            An always-incrementing sequence number for this market.
+
+
+
+
+4.returnTradeHistory (public)
+Returns the past 200 trades for a given market, or up to 1,000 trades between a range specified in UNIX timestamps by the "start" and "end" GET parameters. Fields include:
+
+GET:http://api.fexhk.com/teamwork/public?command=returnTradeHistory&currencyPair=BTC_USDT&start=1568081410&end=1568859010
+
+Field	              Description
+globalTradeID	         The globally unique ID associated with this trade.
+tradeID	              The ID unique only to this currency pair associated with this trade.
+date	                   The UTC date and time of the trade execution.
+type	                   Designates this trade as a buy or a sell from the side of the taker.
+rate	                   The price in base currency for this asset.
+amount	              The number of units transacted in this trade.
+total	                   The total price in base units for this trade.
+
+
+
+
+5.returnChartData
+Returns candlestick chart data. Required GET parameters are "currencyPair", "period" (candlestick period in seconds; valid values are 300, 900, 1800, 7200, 14400, and 86400), "start", and "end". "Start" and "end" are given in UNIX timestamp format and used to specify the date range for the data returned. Fields include:
+
+GET:http://api.fexhk.com/teamwork/public?command=returnChartData&currencyPair=ETH_BTC&start=1568750872&end=1568864332&period=300
+
+
+
+Input Fields
+
+Field	             Description
+currencyPair	        The currency pair of the market being requested.
+Period               Candlestick period in seconds. Valid values are 300, 900, 1800, 7200, 14400,         and 86400.
+start	                 The start of the window in seconds since the unix epoch.
+end	                 The end of the window in seconds since the unix epoch.
+
+
+Output Fields
+
+Field	           Description
+date	               The UTC date for this candle in miliseconds since the Unix epoch.
+high	               The highest price for this asset within this candle.
+low	               The lowest price for this asset within this candle.
+open	          The price for this asset at the start of the candle.
+close	          The price for this asset at the end of the candle.
+volume	          The total amount of this asset transacted within this candle.
+quoteVolume	     The total amount of base currency transacted for this asset within this candle.
+weightedAverage	 The average price paid for this asset within this candle.
+
+
+
+
+6.returnCurrencies
+Returns information about currencies. Fields include:
+
+GET:http://api.fexhk.com/teamwork/public?command=returnCurrencies
+
+
+Field	        Description
+name	        Name of the currency.
+txFee	        The network fee necessary to withdraw this currency.
+minConf	The minimum number of blocks necessary before a deposit can be credited to   an account.
+depositAddress   If available, the deposit address for this currency.
+disabled	        Designates whether (1) or not (0) deposits and withdrawals are disabled.
+delisted	Designates whether (1) or not (0) this currency has been delisted from the   exchange.
+frozen	Designates whether (1) or not (0) trading for this currency is disabled for    trading.
